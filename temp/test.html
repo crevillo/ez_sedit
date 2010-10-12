@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<!-- test -->
+<head>
+  <meta charset="utf-8">
+
+ <link rel="stylesheet" href="http://ez.scollings.connect-qa-01.sites.ipcdigital.co.uk/sedit/stylesheets/sedit.css">
+ <style type="text/css">
+ #test-node {
+ 	height:200px;
+ }
+ </style>
+
+<script src="http://yui.yahooapis.com/combo?3.2.0/build/yui/yui.js&3.2.0/build/loader/loader.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+
+YUI({
+	modules: {
+		'sedit': {
+			fullpath: 'http://ez.scollings.connect-qa-01.sites.ipcdigital.co.uk/sedit/javascript/sedit.js',
+			requires: ['node', 'event', 'dom']
+		}
+  	},
+  	filter: 'RAW'
+}).use('sedit', function(Y){
+	var policies = {
+			edit: {
+				Node: ['5']
+			}
+	};
+
+	Y.sEdit.I18N = {
+		edit: 'Edit'
+	};
+
+	Y.on('domready', function(){
+		Y.sEdit.init({
+			policies: policies,
+			userId: '5'
+		});
+	});
+});
+
+</script>
+ </head>
+
+ <body>
+
+<div id="test-node" class="se-node se-nid-10 se-oid-9 se-sid-8 se-pid-7 se-stid-1-2- se-owid-6 se-cid-4 se-lang-eng-GB">
+
+</div>
+
+<div id="test-node" class="se-node se-nid-5 se-oid-9 se-sid-8 se-pid-7 se-stid-1-2- se-owid-6 se-cid-4 se-lang-eng-GB">
+
+</div>
+
+ </body>
+
+ </html>

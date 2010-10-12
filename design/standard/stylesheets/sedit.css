@@ -1,0 +1,39 @@
+.se-toggle {
+	display:block;
+	height:16px;
+	width:16px;
+	border:2px solid #f90;
+	text-indent:-9999px;
+}
+
+.se-icon {
+	display:block;
+	height:16px;
+	width:16px;
+	border:1px solid #f90;
+	text-indent:-9999px;
+	overflow:hidden;
+	float:left;
+	margin-left:1px;
+}
+
+.se-node {
+	position:relative;
+}
+
+.se-node.on {
+	border:2px solid #f90;
+	padding:2px;
+	margin:-4px;
+}
+
+.se-node-controls {
+	display:none;
+	position:absolute;
+	right:2px;
+	top:2px;
+}
+
+.se-node-controls.on {
+	display:inline;
+}

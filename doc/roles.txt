@@ -1,0 +1,32 @@
+Use this fetch to populate a Javascript permission checking function:
+
+{def $policies=fetch( 'user', 'user_role', hash( 'user_id', $current_user.contentobject_id ) )}
+ 
+{foreach $policies as $policy}
+   {$policy.moduleName} /
+   {$policy.functionName} /
+   {if $policy.limitation|is_array}({foreach $policy.limitation as $limit}{$limit.values_as_array_with_names|debug($limit.identifier)}{/foreach}){/if} <br />
+{/foreach}
+
+which uses css classes on a content wrapper:
+
+content / edit limitations
+
+class_identifier
+section
+owner
+group
+language
+node
+subtree
+
+
+
+es-n-[nodeid]
+es-o-[objectid]
+es-c-[classid]
+es-s-[section]
+es-ow-[owner]
+es-g-[group]
+es-l-[lang]
+es-p-[parentnodeid]
