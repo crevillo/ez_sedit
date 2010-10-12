@@ -69,8 +69,6 @@ YUI.add('sedit', function(Y){
 	
 	function _containsStartOf(arr, value) {
 		var i, l=arr.length;
-		console.info(arr);
-		console.info(value);
 		for ( i=0; i<l; i++) {
 			if ( value.indexOf(arr[i]) === 0 ) {
 				return true;
@@ -141,7 +139,7 @@ YUI.add('sedit', function(Y){
 		}
 		
 		if ( !L.isUndefined(policy.Language) && L.isArray(policy.Language) ) {
-			if ( !_contains(policy.Language, '/' + node.lang) ) {
+			if ( !_contains(policy.Language, node.lang) ) {
 				return false;
 			}
 		}
