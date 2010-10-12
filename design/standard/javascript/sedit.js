@@ -69,8 +69,10 @@ YUI.add('sedit', function(Y){
 	
 	function _containsStartOf(arr, value) {
 		var i, l=arr.length;
+		console.info(arr);
+		console.info(value);
 		for ( i=0; i<l; i++) {
-			if ( arr[i].indexOf(value) === 0 ) {
+			if ( value.indexOf(arr[i]) === 0 ) {
 				return true;
 			}
 		}
