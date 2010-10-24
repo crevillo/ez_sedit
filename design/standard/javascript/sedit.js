@@ -14,8 +14,8 @@ YUI.add('sedit', function(Y){
 		
 	_nodeActions = {
 		edit: function(node, atts) {
-			console.info('/content/edit/' + atts.nid);
-			//window.location.href = '/content/edit/' + atts.nid;
+			//console.info('/content/edit/' + atts.nid);
+			window.location.href = '/content/edit/' + atts.oid + '//' + atts.lang;
 		},
 		move: function(node, atts) {
 		},

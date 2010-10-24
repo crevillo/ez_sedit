@@ -1,5 +1,5 @@
-<div class="ezwt-right">
-	<p><a class="se-toggle" href="#" title="{'Edit content inline'|i18n('extension/_sedit')}">Edit content inline</a></p>
+<div class="right" style="margin-left:4px;">
+	<a class="se-toggle" href="#" title="{'Edit content inline'|i18n('extension/_sedit')}">Edit content inline</a>
 </div>
 <script type="text/javascript">
 {literal}
@@ -7,7 +7,7 @@
 	YUI({
 		modules: {
 			'sedit': {
-			fullpath: '{/literal}{'javascript/sedit.js'|ezdesign}{literal}',
+			fullpath: '{/literal}{'javascript/sedit.js'|ezdesign(no)}{literal}',
 			requires: ['node', 'event', 'dom']
 		}
 	  }
