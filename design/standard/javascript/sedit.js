@@ -1,7 +1,7 @@
 YUI.add('sedit', function(Y){
 	var L = Y.Lang,
 		_attributeCache = {},
-		_funcs = ['edit', 'move', 'remove'], //, 'move'],
+		_funcs = ['edit', 'move', 'remove', 'addlocations'], //, 'move'],
 		_nodeIcons = {},
 		_nodeActions = {},
 		_nodeControls, _currentItem, _policies, _userId;
@@ -10,7 +10,8 @@ YUI.add('sedit', function(Y){
 		edit: 'Edit',
 		hide: 'Hide',
 		move: 'Move',
-		remove: 'Remove'
+		remove: 'Remove',
+		addlocations: 'Add locations'
 	};
 		
 	_nodeActions = {
@@ -42,7 +43,13 @@ YUI.add('sedit', function(Y){
 				ActionRemove: true
 			});
 		},
-		manage_locations: function(node, atts) {
+		addlocations: function(node, atts) {
+			_postRequest('/content/action', {
+				ContentNodeID: atts.nid,
+				NodeID: atts.nid,
+				ContentObjectID: atts.oid,
+				AddAssignmentButton: true
+			});
 		},
 		translate: function(node, atts) {
 		}
