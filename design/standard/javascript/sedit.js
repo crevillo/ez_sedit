@@ -1,7 +1,7 @@
 YUI.add('sedit', function(Y){
 	var L = Y.Lang,
 		_attributeCache = {},
-		_funcs = ['edit', 'hide'], //, 'move'],
+		_funcs = ['edit', 'move', 'remove'], //, 'move'],
 		_nodeIcons = {},
 		_nodeActions = {},
 		_nodeControls, _currentItem, _policies, _userId;
@@ -9,25 +9,62 @@ YUI.add('sedit', function(Y){
 	var _I18N = {
 		edit: 'Edit',
 		hide: 'Hide',
-		move: 'Move'
+		move: 'Move',
+		remove: 'Remove'
 	};
 		
 	_nodeActions = {
 		edit: function(node, atts) {
-			//console.info('/content/edit/' + atts.nid);
-			window.location.href = '/content/edit/' + atts.oid + '//' + atts.lang;
+			_postRequest('/content/action', {
+				ContentObjectLanguageCode: atts.lang,
+				ContentNodeID: atts.nid,
+				NodeID: atts.nid,
+				ContentObjectID: atts.oid,
+				RedirectURIAfterPublish: window.location.href,
+				RedirectIfDiscarded: window.location.href,
+				EditButton: true
+			});
 		},
 		move: function(node, atts) {
+			_postRequest('/content/action', {
+				ContentNodeID: atts.nid,
+				NodeID: atts.nid,
+				MoveNodeButton: true
+			});
 		},
 		hide: function(node, atts) {
 		},
 		remove: function(node, atts) {
+			_postRequest('/content/action', {
+				ContentNodeID: atts.nid,
+				NodeID: atts.nid,
+				ContentObjectID: atts.oid,
+				ActionRemove: true
+			});
 		},
 		manage_locations: function(node, atts) {
 		},
 		translate: function(node, atts) {
 		}
 	};
+
+	function _postRequest(url, params) {
+		var form = document.createElement("form");
+	    form.setAttribute("method", 'post');
+	    form.setAttribute("action", url);
+
+	    for(var key in params) {
+	        var hiddenField = document.createElement("input");
+	        hiddenField.setAttribute("type", "hidden");
+	        hiddenField.setAttribute("name", key);
+	        hiddenField.setAttribute("value", params[key]);
+
+	        form.appendChild(hiddenField);
+	    }
+
+	    document.body.appendChild(form);    // Not entirely sure if this is necessary
+	    form.submit();
+	}
 	
 	// 
 	function _parseNode(node) {
@@ -230,7 +267,6 @@ YUI.add('sedit', function(Y){
 	}
 	
 	function _init(config) {
-		console.info(_I18N);
 		_policies = config.policies;
 		_userId = config.userId;
 		_initUI();
