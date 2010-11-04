@@ -2,13 +2,13 @@
 
 $eZTemplateFunctionArray = array();
 $eZTemplateFunctionArray[] = array( 'function' => 'sObjectForwardInit',
-                                    'function_names' => array( 'sedit_node_view_gui' ) );
+                                    'function_names' => array( 'node_sedit_gui', 'attribute_sedit_gui' ) );
 if ( !function_exists( 'sObjectForwardInit' ) )
 {
     function sObjectForwardInit()
     {
     	$forward_rules = array(
-                'sedit_node_view_gui' => array( 'template_root' => 'node/view',
+                'node_sedit_gui' => array( 'template_root' => 'node/view',
                                           'input_name' => 'content_node',
                                           'output_name' => 'node',
                                           'namespace' => 'NodeView',
@@ -28,7 +28,24 @@ if ( !function_exists( 'sObjectForwardInit' ) )
                                                                      'node_remote_id' => array( 'remote_id' ),
                                                                      'parent_class_identifier' => array( 'parent', 'class_identifier' ) ),
                                           'attribute_access' => array(),
-                                          'use_views' => 'view' )
+                                          'use_views' => 'view' ),
+                'attribute_sedit_gui' => array( 'template_root' => array( 'type' => 'multi_match',
+                                                                         'attributes' => array( 'is_information_collector' ),
+                                                                         'matches' => array( array( false,
+                                                                                                    'content/datatype/view' ),
+                                                                                             array( true,
+                                                                                                    'content/datatype/collect' ) ) ),
+                                               'render_mode' => false,
+                                               'input_name' => 'attribute',
+                                               'output_name' => 'attribute',
+                                               'namespace' => 'ContentAttribute',
+                                               'attribute_keys' => array( 'attribute_identifier' => array( 'contentclass_attribute_identifier' ),
+                                                                          'attribute' => array( 'contentclassattribute_id' ),
+                                                                          'class_identifier' => array( 'object', 'class_identifier' ),
+                                                                          'class' => array( 'object', 'contentclass_id' ) ),
+                                               'attribute_access' => array( array( 'view_template' ) ),
+                                               'optional_views' => true,
+                                               'use_views' => 'view' ),
                                            );
             return new sObjectForwarder( $forward_rules );
     }
