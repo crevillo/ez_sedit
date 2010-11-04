@@ -1,10 +1,12 @@
 YUI.add('sedit', function(Y){
 	var L = Y.Lang,
 		_attributeCache = {},
-		_funcs = ['edit', 'move', 'remove', 'addlocations'], //, 'move'],
+		_nodeFunctions = ['edit', 'move', 'remove', 'addlocations'],
+		_attributeFunctions = ['edit'],
 		_nodeIcons = {},
 		_nodeActions = {},
-		_nodeControls, _currentItem, _policies, _userId;
+		_attributeActions = {},
+		_nodeControls, _attributeControls, _currentNodeItem, _currentAttributeItem, _policies, _userId;
 
 	var _I18N = {
 		edit: 'Edit',
@@ -55,6 +57,12 @@ YUI.add('sedit', function(Y){
 		}
 	};
 
+	_attributeActions = {
+		edit: function(node, atts) {
+			console.info(atts);
+		}
+	}
+
 	function _postRequest(url, params) {
 		var form = document.createElement("form");
 	    form.setAttribute("method", 'post');
@@ -69,7 +77,7 @@ YUI.add('sedit', function(Y){
 	        form.appendChild(hiddenField);
 	    }
 
-	    document.body.appendChild(form);    // Not entirely sure if this is necessary
+	    document.body.appendChild(form);
 	    form.submit();
 	}
 	
@@ -94,8 +102,8 @@ YUI.add('sedit', function(Y){
 			}
 		}
 		
-		for ( i=0, l=_funcs.length; i<l; i++ ) {
-			attributes[_funcs[i]] = _canDo(_funcs[i], attributes);
+		for ( i=0, l=_nodeFunctions.length; i<l; i++ ) {
+			attributes[_nodeFunctions[i]] = _canDo(_nodeFunctions[i], attributes);
 		}
 		_attributeCache[node._yuid] = attributes;
 		return attributes;
@@ -121,7 +129,7 @@ YUI.add('sedit', function(Y){
 		return false;
 	}
 	
-	function _canDoAll_funcs() {
+	function _canDoAll_nodeFunctions() {
 		if ( _policies == '*' ) {
 			return true;
 		}
@@ -130,7 +138,7 @@ YUI.add('sedit', function(Y){
 	}
 	
 	function _canDoAll(funcName) {
-		if ( _canDoAll_funcs() ) {
+		if ( _canDoAll_nodeFunctions() ) {
 			return true;
 		}
 		
@@ -202,8 +210,8 @@ YUI.add('sedit', function(Y){
 	
 	// returns true if the user can do at least one of the available content functions on a node
 	function _canDoOne(node) {
-		for ( i=0, l=_funcs.length; i<l; i++ ) {
-			if ( node[_funcs[i]] == true ) {
+		for ( i=0, l=_nodeFunctions.length; i<l; i++ ) {
+			if ( node[_nodeFunctions[i]] == true ) {
 				return true;
 			}
 		}
@@ -211,66 +219,135 @@ YUI.add('sedit', function(Y){
 	}
 
 	
-	function _uiSetVisible(node) {
+	function _nodeUISetVisible(node) {
 		var attributes = _parseNode(node);
+		console.info('Node visible: ' + attributes.oid);
 
 		if ( !_canDoOne(attributes) ) {
 			return false;
 		}
 		
-		for ( i=0, l=_funcs.length; i<l; i++ ) {
-			if ( attributes[_funcs[i]] ) {
-				_nodeIcons[_funcs[i]].addClass('on');
+		for ( i=0, l=_nodeFunctions.length; i<l; i++ ) {
+			if ( attributes[_nodeFunctions[i]] ) {
+				_nodeIcons[_nodeFunctions[i]].addClass('on');
 			} else {
-				_nodeIcons[_funcs[i]].removeClass('on');
+				_nodeIcons[_nodeFunctions[i]].removeClass('on');
 			}
 		}
 
-		if ( !!_currentItem ) {
-			_uiSetInvisible(_currentItem);
+		if ( !!_currentNodeItem ) {
+			_nodeUISetInvisible(_currentNodeItem);
 		}
 
 		node.append(_nodeControls);
 		node.addClass('on');
 		_nodeControls.addClass('on');
 
-		_currentItem = node;
+		_currentNodeItem = node;
 	}
 	
-	function _uiSetInvisible(node) {
+	function _nodeUISetInvisible(node) {
 		_nodeControls.removeClass('on');
 		node.removeClass('on');
 
-		_currentItem = null;
+		var attributes = _parseNode(node);
+		console.info('Node invisible: ' + attributes.oid);
+		_currentNodeItem = null;
+	}
+
+
+	function _attributeUISetVisible(node) {
+		var attributes = _parseNode(node);
+
+		console.info('Att visible: ' + attributes.oid);
+
+		if ( !_canDo('edit', attributes) ) {
+			return false;
+		}
+
+		if ( !!_currentAttributeItem ) {
+			_attributeUISetInvisible(_currentAttributeItem);
+		}
+
+		node.append(_attributeControls);
+		node.addClass('on');
+		_attributeControls.addClass('on');
+
+		_currentAttributeItem = node;
+
+		if ( !node.hasClass('se-node') ) {
+			if ( !node.ancestor('.se-node.se-oid-' + attributes.oid) ) {
+				node.addClass('se-node');
+				_nodeUISetVisible(node);
+			}
+		}
+	}
+	
+	function _attributeUISetInvisible(node) {
+		_attributeControls.removeClass('on');
+		node.removeClass('on');
+
+		_currentAttributeItem = null;
+
+		var attributes = _parseNode(node);
+
+		console.info('Att invisible: ' + attributes.oid);
+		/*if ( !node.ancestor('.se-node.se-oid-' + attributes.oid) ) {
+			_nodeUISetInvisible(node);
+		}*/
 	}
 	
 	function _initUI() {
 		var icon;
 		_nodeControls = Y.Node.create('<div class="se-node-controls"></div>');
 		
-		for ( i=0, l=_funcs.length; i<l; i++ ) {
-			icon = Y.Node.create('<a href="#" class="se-icon se-' + _funcs[i] + '" title="' + _I18N[_funcs[i]] + '">' + _I18N[_funcs[i]] + '</a>');
+		for ( i=0, l=_nodeFunctions.length; i<l; i++ ) {
+			icon = Y.Node.create('<a href="#" class="se-icon se-' + _nodeFunctions[i] + '" title="' + _I18N[_nodeFunctions[i]] + '">' + _I18N[_nodeFunctions[i]] + '</a>');
 			_nodeControls.append(icon);
-			icon.setData('funcName', _funcs[i]);
+			icon.setData('funcName', _nodeFunctions[i]);
 			Y.on('click', function(e){
-				_nodeActions[e.target.getData('funcName')](_currentItem, _parseNode(_currentItem));
+				_nodeActions[e.target.getData('funcName')](_currentNodeItem, _parseNode(_currentNodeItem));
 				e.preventDefault();
 			}, icon);
-			icon.setData('funcName', _funcs[i]);
-			_nodeIcons[_funcs[i]] = icon;
+			icon.setData('funcName', _nodeFunctions[i]);
+			_nodeIcons[_nodeFunctions[i]] = icon;
 		}
 
 		Y.get('body').append(_nodeControls);
+
+		_attributeControls = Y.Node.create('<div class="se-attribute-controls"></div>');
+		
+		for ( i=0, l=_attributeFunctions.length; i<l; i++ ) {
+			icon = Y.Node.create('<a href="#" class="se-icon se-' + _attributeFunctions[i] + '" title="' + _I18N[_attributeFunctions[i]] + '">' + _I18N[_attributeFunctions[i]] + '</a>');
+			_attributeControls.append(icon);
+			icon.setData('funcName', _attributeFunctions[i]);
+			Y.on('click', function(e){
+				_attributeActions[e.target.getData('funcName')](_currentAttributeItem, _parseNode(_currentAttributeItem));
+				e.preventDefault();
+			}, icon);
+			icon.setData('funcName', _attributeFunctions[i]);
+		}
+
+		Y.get('body').append(_attributeControls);
 	}
 	
 	function _addListeners() {
 		Y.delegate('mouseenter', function(e) {
-			_uiSetVisible(e.currentTarget);
+			_nodeUISetVisible(e.currentTarget);
 		}, 'body', '.se-node');
 		
 		Y.delegate('mouseleave', function(e) {
-			_uiSetInvisible(e.currentTarget);
+			_nodeUISetInvisible(e.currentTarget);
 		}, 'body', '.se-node');
+		Y.delegate('mouseenter', function(e) {
+			_attributeUISetVisible(e.currentTarget);
+			e.stopPropagation();
+		}, 'body', '.se-attribute');
+		
+		Y.delegate('mouseleave', function(e) {
+			_attributeUISetInvisible(e.currentTarget);
+			e.stopPropagation();
+		}, 'body', '.se-attribute');
 	}
 	
 	function _init(config) {

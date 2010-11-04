@@ -10,14 +10,43 @@
 	display:block;
 	height:16px;
 	width:16px;
-	border:1px solid #f90;
 	text-indent:-9999px;
 	overflow:hidden;
 	float:left;
 	margin-left:1px;
 }
 
-.se-node {
+.se-attribute.on {
+	border:2px solid #9300ff;
+	padding:2px;
+	margin:-4px;
+}
+
+.se-attribute-controls {
+	display:none;
+	position:absolute;
+	right:2px;
+	top:2px;
+}
+
+.se-node.se-attribute .se-attribute-controls {
+	top:auto;
+	bottom:2px;
+}
+
+.se-attribute-controls.on {
+	display:inline;
+}
+
+.se-node-controls .se-icon {
+	background:#f90;
+}
+
+.se-attribute-controls .se-icon {
+	background:#9300ff;
+}
+
+.se-node, .se-attribute {
 	position:relative;
 }
 
@@ -36,4 +65,14 @@
 
 .se-node-controls.on {
 	display:inline;
+}
+
+
+/* ezflow specific */
+.se-attribute {
+	z-index:0;
+}
+
+.attribute-image .se-attribute {
+	z-index:1;
 }

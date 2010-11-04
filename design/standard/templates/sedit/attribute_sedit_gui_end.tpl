@@ -1,1 +1,1 @@
-</div>
+{if $attribute.is_information_collector|not}</div>{/if}
