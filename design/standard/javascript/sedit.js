@@ -9,16 +9,15 @@ YUI.add('sedit', function(Y){
 		_nodeControls, _attributeControls, _currentNodeItem, _currentAttributeItem;
 
 	var _I18N = {
-		edit: 'Edit',
-		hide: 'Hide',
-		move: 'Move',
-		remove: 'Remove',
-		addlocations: 'Add locations'
 	};
+
+	_ezUrl = function(url) {
+		return _config.ezRoot + url;
+	}
 		
 	_nodeActions = {
 		edit: function(node, atts) {
-			_postRequest('/content/action', {
+			_postRequest(_ezUrl('/content/action'), {
 				ContentObjectLanguageCode: atts.lang,
 				ContentNodeID: atts.nid,
 				NodeID: atts.nid,
@@ -29,7 +28,7 @@ YUI.add('sedit', function(Y){
 			});
 		},
 		move: function(node, atts) {
-			_postRequest('/content/action', {
+			_postRequest(_ezUrl('/content/action'), {
 				ContentNodeID: atts.nid,
 				NodeID: atts.nid,
 				RedirectURIAfterMove: window.location.href,
@@ -38,10 +37,10 @@ YUI.add('sedit', function(Y){
 			});
 		},
 		hide: function(node, atts) {
-			window.location.href = '/content/hide/' + atts.nid;
+			window.location.href = _ezUrl('/content/hide/' + atts.nid);
 		},
 		remove: function(node, atts) {
-			_postRequest('/content/action', {
+			_postRequest(_ezUrl('/content/action'), {
 				ContentNodeID: atts.nid,
 				NodeID: atts.nid,
 				ContentObjectID: atts.oid,
@@ -51,10 +50,10 @@ YUI.add('sedit', function(Y){
 			});
 		},
 		sort: function(node, atts) {
-			window.location.href = '/content/sort/' + atts.nid;
+			window.location.href = _ezUrl('/content/sort/' + atts.nid);
 		},
 		addlocations: function(node, atts) {
-			_postRequest('/content/action', {
+			_postRequest(_ezUrl('/content/action'), {
 				ContentNodeID: atts.nid,
 				NodeID: atts.nid,
 				ContentObjectID: atts.oid,
@@ -67,26 +66,40 @@ YUI.add('sedit', function(Y){
 
 	_attributeActions = {
 		edit: function(node, atts) {
-			console.info(atts);
+			Y.io(_ezUrl('/content/action'), {
+				data: {
+					sEditAttributeAction: true,
+					AttributeId: atts.aid,
+					ObjectId: atts.oid
+				},
+				on : {
+					success: function(e) {
+						console.info(e);
+					},
+					failure: function(e) {
+						console.info(e);
+					}
+				}
+			});
 		}
 	}
 
 	function _postRequest(url, params) {
 		var form = document.createElement("form");
-	    form.setAttribute("method", 'post');
-	    form.setAttribute("action", url);
+    form.setAttribute("method", 'post');
+    form.setAttribute("action", url);
 
-	    for(var key in params) {
-	        var hiddenField = document.createElement("input");
-	        hiddenField.setAttribute("type", "hidden");
-	        hiddenField.setAttribute("name", key);
-	        hiddenField.setAttribute("value", params[key]);
+    for(var key in params) {
+        var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", key);
+        hiddenField.setAttribute("value", params[key]);
 
-	        form.appendChild(hiddenField);
-	    }
+        form.appendChild(hiddenField);
+    }
 
-	    document.body.appendChild(form);
-	    form.submit();
+    document.body.appendChild(form);
+    form.submit();
 	}
 	
 	// 
@@ -373,4 +386,4 @@ YUI.add('sedit', function(Y){
 	}
 
 
-}, '1', {requires: ['node', 'event', 'dom']});
+}, '1', {requires: ['node', 'event', 'dom', 'io']});

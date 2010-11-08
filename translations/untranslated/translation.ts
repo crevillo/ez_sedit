@@ -18,6 +18,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Sort</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Add locations</source>
         <translation type="unfinished"></translation>
     </message>
