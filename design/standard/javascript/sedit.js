@@ -301,7 +301,7 @@ YUI.add('sedit', function(Y){
 
 		_currentAttributeItem = node;
 
-		if ( !node.hasClass('se-node') ) {
+		if ( !node.hasClass('se-node') && attributes.nid != _config.currentNodeId ) {
 			if ( !node.ancestor('.se-node.se-oid-' + attributes.oid) ) {
 				node.addClass('se-node');
 				_nodeUISetVisible(node);
