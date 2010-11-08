@@ -6,7 +6,7 @@ YUI.add('sedit', function(Y){
 		_nodeIcons = {},
 		_nodeActions = {},
 		_attributeActions = {},
-		_nodeControls, _attributeControls, _currentNodeItem, _currentAttributeItem, _policies, _userId;
+		_nodeControls, _attributeControls, _currentNodeItem, _currentAttributeItem;
 
 	var _I18N = {
 		edit: 'Edit',
@@ -130,7 +130,7 @@ YUI.add('sedit', function(Y){
 	}
 	
 	function _canDoAll_nodeFunctions() {
-		if ( _policies == '*' ) {
+		if ( _config.policies == '*' ) {
 			return true;
 		}
 		
@@ -142,11 +142,11 @@ YUI.add('sedit', function(Y){
 			return true;
 		}
 		
-		if ( !L.isObject(_policies) ) {
+		if ( !L.isObject(_config.policies) ) {
 			return false;
 		}
 		
-		var policy = _policies[funcName];
+		var policy = _config.policies[funcName];
 		
 		if ( policy == '*' ) {
 			return true;
@@ -160,7 +160,7 @@ YUI.add('sedit', function(Y){
 			return true;
 		}
 		
-		var policy = _policies[funcName];
+		var policy = _config.policies[funcName];
 		
 		if ( !L.isObject(policy) ) {
 			return false;
@@ -197,7 +197,7 @@ YUI.add('sedit', function(Y){
 		}
 		
 		if ( !L.isUndefined(policy.Owner) && ( policy.Owner == '1' || policy.Owner == '2' ) ) {
-			if ( node.owid != _userId ) {
+			if ( node.owid != _config.userId ) {
 				return false;
 			}
 		}
@@ -299,36 +299,41 @@ YUI.add('sedit', function(Y){
 	
 	function _initUI() {
 		var icon;
-		_nodeControls = Y.Node.create('<div class="se-node-controls"></div>');
-		
-		for ( i=0, l=_nodeFunctions.length; i<l; i++ ) {
-			icon = Y.Node.create('<a href="#" class="se-icon se-' + _nodeFunctions[i] + '" title="' + _I18N[_nodeFunctions[i]] + '">' + _I18N[_nodeFunctions[i]] + '</a>');
-			_nodeControls.append(icon);
-			icon.setData('funcName', _nodeFunctions[i]);
-			Y.on('click', function(e){
-				_nodeActions[e.target.getData('funcName')](_currentNodeItem, _parseNode(_currentNodeItem));
-				e.preventDefault();
-			}, icon);
-			icon.setData('funcName', _nodeFunctions[i]);
-			_nodeIcons[_nodeFunctions[i]] = icon;
+
+		if ( enableNodeFunctions ) {
+			_nodeControls = Y.Node.create('<div class="se-node-controls"></div>');
+			
+			for ( i=0, l=_nodeFunctions.length; i<l; i++ ) {
+				icon = Y.Node.create('<a href="#" class="se-icon se-' + _nodeFunctions[i] + '" title="' + _I18N[_nodeFunctions[i]] + '">' + _I18N[_nodeFunctions[i]] + '</a>');
+				_nodeControls.append(icon);
+				icon.setData('funcName', _nodeFunctions[i]);
+				Y.on('click', function(e){
+					_nodeActions[e.target.getData('funcName')](_currentNodeItem, _parseNode(_currentNodeItem));
+					e.preventDefault();
+				}, icon);
+				icon.setData('funcName', _nodeFunctions[i]);
+				_nodeIcons[_nodeFunctions[i]] = icon;
+			}
+
+			Y.get('body').append(_nodeControls);
 		}
 
-		Y.get('body').append(_nodeControls);
+		if ( enableAttributeFunctions ) {
+			_attributeControls = Y.Node.create('<div class="se-attribute-controls"></div>');
+			
+			for ( i=0, l=_attributeFunctions.length; i<l; i++ ) {
+				icon = Y.Node.create('<a href="#" class="se-icon se-' + _attributeFunctions[i] + '" title="' + _I18N[_attributeFunctions[i]] + '">' + _I18N[_attributeFunctions[i]] + '</a>');
+				_attributeControls.append(icon);
+				icon.setData('funcName', _attributeFunctions[i]);
+				Y.on('click', function(e){
+					_attributeActions[e.target.getData('funcName')](_currentAttributeItem, _parseNode(_currentAttributeItem));
+					e.preventDefault();
+				}, icon);
+				icon.setData('funcName', _attributeFunctions[i]);
+			}
 
-		_attributeControls = Y.Node.create('<div class="se-attribute-controls"></div>');
-		
-		for ( i=0, l=_attributeFunctions.length; i<l; i++ ) {
-			icon = Y.Node.create('<a href="#" class="se-icon se-' + _attributeFunctions[i] + '" title="' + _I18N[_attributeFunctions[i]] + '">' + _I18N[_attributeFunctions[i]] + '</a>');
-			_attributeControls.append(icon);
-			icon.setData('funcName', _attributeFunctions[i]);
-			Y.on('click', function(e){
-				_attributeActions[e.target.getData('funcName')](_currentAttributeItem, _parseNode(_currentAttributeItem));
-				e.preventDefault();
-			}, icon);
-			icon.setData('funcName', _attributeFunctions[i]);
+			Y.get('body').append(_attributeControls);
 		}
-
-		Y.get('body').append(_attributeControls);
 	}
 	
 	function _addListeners() {
@@ -351,8 +356,7 @@ YUI.add('sedit', function(Y){
 	}
 	
 	function _init(config) {
-		_policies = config.policies;
-		_userId = config.userId;
+		_config = config;
 		_initUI();
 		_addListeners();
 	}
