@@ -30,3 +30,6 @@ es-ow-[owner]
 es-g-[group]
 es-l-[lang]
 es-p-[parentnodeid]
+
+
+http://serwatka.net/blog/do_you_need_action

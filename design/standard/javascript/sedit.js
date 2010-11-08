@@ -1,7 +1,7 @@
 YUI.add('sedit', function(Y){
 	var L = Y.Lang,
 		_attributeCache = {},
-		_nodeFunctions = ['edit', 'move', 'remove', 'hide', 'addlocations'],
+		_nodeFunctions = ['edit', 'move', 'remove', 'hide', 'sort', 'addlocations'],
 		_attributeFunctions = ['edit'],
 		_nodeIcons = {},
 		_nodeActions = {},
@@ -32,6 +32,8 @@ YUI.add('sedit', function(Y){
 			_postRequest('/content/action', {
 				ContentNodeID: atts.nid,
 				NodeID: atts.nid,
+				RedirectURIAfterMove: window.location.href,
+				RedirectIfCancel: window.location.href,
 				MoveNodeButton: true
 			});
 		},
@@ -43,8 +45,13 @@ YUI.add('sedit', function(Y){
 				ContentNodeID: atts.nid,
 				NodeID: atts.nid,
 				ContentObjectID: atts.oid,
+				RedirectURIAfterRemove: window.location.href,
+				RedirectIfCancel: window.location.href,
 				ActionRemove: true
 			});
+		},
+		sort: function(node, atts) {
+			window.location.href = '/content/sort/' + atts.nid;
 		},
 		addlocations: function(node, atts) {
 			_postRequest('/content/action', {
