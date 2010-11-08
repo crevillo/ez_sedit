@@ -180,6 +180,10 @@ YUI.add('sedit', function(Y){
 		if ( _canDoAll(funcName) ) {
 			return true;
 		}
+
+		if ( funcName == 'sort' ) {
+			return _canDo('edit', node);
+		}
 		
 		var policy = _config.policies[funcName];
 		
