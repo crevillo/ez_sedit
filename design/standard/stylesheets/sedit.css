@@ -17,7 +17,7 @@
 }
 
 .se-attribute.on {
-	border:2px solid #9300ff;
+	border:2px solid #eb057e;
 	padding:2px;
 	margin:-4px;
 }
@@ -43,7 +43,7 @@
 }
 
 .se-attribute-controls .se-icon {
-	background:#9300ff;
+	background:#eb057e;
 }
 
 .se-node, .se-attribute {

@@ -67,6 +67,7 @@ YUI.add('sedit', function(Y){
 	_attributeActions = {
 		edit: function(node, atts) {
 			Y.io(_ezUrl('/content/action'), {
+				method: 'post',
 				data: {
 					sEditAttributeAction: true,
 					AttributeId: atts.aid,
