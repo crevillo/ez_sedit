@@ -1,7 +1,7 @@
 YUI.add('sedit', function(Y){
 	var L = Y.Lang,
 		_attributeCache = {},
-		_nodeFunctions = ['edit', 'move', 'remove', 'addlocations'],
+		_nodeFunctions = ['edit', 'move', 'remove', 'hide', 'addlocations'],
 		_attributeFunctions = ['edit'],
 		_nodeIcons = {},
 		_nodeActions = {},
@@ -36,6 +36,7 @@ YUI.add('sedit', function(Y){
 			});
 		},
 		hide: function(node, atts) {
+			window.location.href = '/content/hide/' + atts.nid;
 		},
 		remove: function(node, atts) {
 			_postRequest('/content/action', {
@@ -304,7 +305,7 @@ YUI.add('sedit', function(Y){
 			_nodeControls = Y.Node.create('<div class="se-node-controls"></div>');
 			
 			for ( i=0, l=_nodeFunctions.length; i<l; i++ ) {
-				icon = Y.Node.create('<a href="#" class="se-icon se-' + _nodeFunctions[i] + '" title="' + _I18N[_nodeFunctions[i]] + '">' + _I18N[_nodeFunctions[i]] + '</a>');
+				icon = Y.Node.create('<a href="#" class="se-icon se-' + _nodeFunctions[i] + '" title="' + _I18N['node_' + _nodeFunctions[i]] + '">' + _I18N[_nodeFunctions[i]] + '</a>');
 				_nodeControls.append(icon);
 				icon.setData('funcName', _nodeFunctions[i]);
 				Y.on('click', function(e){
@@ -316,13 +317,21 @@ YUI.add('sedit', function(Y){
 			}
 
 			Y.get('body').append(_nodeControls);
+
+			Y.delegate('mouseenter', function(e) {
+				_nodeUISetVisible(e.currentTarget);
+			}, 'body', '.se-node');
+			
+			Y.delegate('mouseleave', function(e) {
+				_nodeUISetInvisible(e.currentTarget);
+			}, 'body', '.se-node');
 		}
 
 		if ( enableAttributeFunctions ) {
 			_attributeControls = Y.Node.create('<div class="se-attribute-controls"></div>');
 			
 			for ( i=0, l=_attributeFunctions.length; i<l; i++ ) {
-				icon = Y.Node.create('<a href="#" class="se-icon se-' + _attributeFunctions[i] + '" title="' + _I18N[_attributeFunctions[i]] + '">' + _I18N[_attributeFunctions[i]] + '</a>');
+				icon = Y.Node.create('<a href="#" class="se-icon se-' + _attributeFunctions[i] + '" title="' + _I18N['attribute_' + _attributeFunctions[i]] + '">' + _I18N[_attributeFunctions[i]] + '</a>');
 				_attributeControls.append(icon);
 				icon.setData('funcName', _attributeFunctions[i]);
 				Y.on('click', function(e){
@@ -333,32 +342,22 @@ YUI.add('sedit', function(Y){
 			}
 
 			Y.get('body').append(_attributeControls);
+
+			Y.delegate('mouseenter', function(e) {
+				_attributeUISetVisible(e.currentTarget);
+				e.stopPropagation();
+			}, 'body', '.se-attribute');
+			
+			Y.delegate('mouseleave', function(e) {
+				_attributeUISetInvisible(e.currentTarget);
+				e.stopPropagation();
+			}, 'body', '.se-attribute');
 		}
-	}
-	
-	function _addListeners() {
-		Y.delegate('mouseenter', function(e) {
-			_nodeUISetVisible(e.currentTarget);
-		}, 'body', '.se-node');
-		
-		Y.delegate('mouseleave', function(e) {
-			_nodeUISetInvisible(e.currentTarget);
-		}, 'body', '.se-node');
-		Y.delegate('mouseenter', function(e) {
-			_attributeUISetVisible(e.currentTarget);
-			e.stopPropagation();
-		}, 'body', '.se-attribute');
-		
-		Y.delegate('mouseleave', function(e) {
-			_attributeUISetInvisible(e.currentTarget);
-			e.stopPropagation();
-		}, 'body', '.se-attribute');
 	}
 	
 	function _init(config) {
 		_config = config;
 		_initUI();
-		_addListeners();
 	}
 	
 	Y.sEdit = {

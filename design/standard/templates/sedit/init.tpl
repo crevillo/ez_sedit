@@ -52,13 +52,14 @@
     {/if}
 {literal};
     Y.sEdit.I18N = {
-      edit: {/literal}{'Edit'|i18n('design/standard/sedit/node')}{literal},
-      move: {/literal}{'Move'|i18n('design/standard/sedit/node')}{literal},
-      remove: {/literal}{'Remove'|i18n('design/standard/sedit/node')}{literal},
-      hide: {/literal}{'Hide'|i18n('design/standard/sedit/node')}{literal},
-      addlocations: {/literal}{'Add locations'|i18n('design/standard/sedit/node')}{literal},
-      publish: {/literal}{'Publish'|i18n('design/standard/sedit/attribute')}{literal},
-      cancel: {/literal}{'Cancel'|i18n('design/standard/sedit/attribute')}{literal}
+      node_edit: {/literal}{'Edit'|i18n('design/standard/sedit/node')}{literal},
+      node_move: {/literal}{'Move'|i18n('design/standard/sedit/node')}{literal},
+      node_remove: {/literal}{'Remove'|i18n('design/standard/sedit/node')}{literal},
+      node_hide: {/literal}{'Hide'|i18n('design/standard/sedit/node')}{literal},
+      node_addlocations: {/literal}{'Add locations'|i18n('design/standard/sedit/node')}{literal},
+      attribute_edit: {/literal}{'Edit'|i18n('design/standard/sedit/attribute')}{literal},
+      attribute_publish: {/literal}{'Publish'|i18n('design/standard/sedit/attribute')}{literal},
+      attribute_cancel: {/literal}{'Cancel'|i18n('design/standard/sedit/attribute')}{literal}
     }
     Y.on('domready', function(){
       Y.sEdit.init({
