@@ -94,11 +94,11 @@ class sObjectForwarder extends eZObjectForwarder
         $extraParameters = array();
         if ( $resourceKeys !== false )
             $extraParameters['ezdesign:keys'] = $resourceKeys;
-            
+        
         $resourceData = $tpl->loadURIRoot( "design:sedit/${functionName}_start.tpl", false, $extraParameters );
         $sub_text = "";
         $setVariableArray = array();
-        $tpl->setVariableRef( $rule["output_name"], $input_var, $outCurrentNamespace );
+        $tpl->setVariable( $rule["output_name"], $input_var, $outCurrentNamespace );
         $setVariableArray[] = $rule["output_name"];
         // Set design keys
         //$tpl->setVariable( 'used', $designUsedKeys, $designKeyNamespace );
@@ -112,7 +112,7 @@ class sObjectForwarder extends eZObjectForwarder
                 continue;
             }
             $paramValue = $tpl->elementValue( $params[$paramName], $old_nspace, $currentNamespace, $functionPlacement );
-            $tpl->setVariableRef( $paramName, $paramValue, $outCurrentNamespace );
+            $tpl->setVariable( $paramName, $paramValue, $outCurrentNamespace );
             $setVariableArray[] = $paramName;
         }
         // Set constant variables
@@ -124,7 +124,7 @@ class sObjectForwarder extends eZObjectForwarder
                      $constantTemplateVariableKey == $view_var or
                      $tpl->hasVariable( $constantTemplateVariableKey, $currentNamespace ) )
                     continue;
-                $tpl->setVariableRef( $constantTemplateVariableKey, $constantTemplateVariableValue, $outCurrentNamespace );
+                $tpl->setVariable( $constantTemplateVariableKey, $constantTemplateVariableValue, $outCurrentNamespace );
                 $setVariableArray[] = $constantTemplateVariableKey;
             }
         }
@@ -144,7 +144,7 @@ class sObjectForwarder extends eZObjectForwarder
         $resourceData = $tpl->loadURIRoot( "design:sedit/${functionName}_end.tpl", false, $extraParameters );
         $sub_text = "";
         $setVariableArray = array();
-        $tpl->setVariableRef( $rule["output_name"], $input_var, $outCurrentNamespace );
+        $tpl->setVariable( $rule["output_name"], $input_var, $outCurrentNamespace );
         $setVariableArray[] = $rule["output_name"];
         // Set design keys
         //$tpl->setVariable( 'used', $designUsedKeys, $designKeyNamespace );
@@ -158,7 +158,7 @@ class sObjectForwarder extends eZObjectForwarder
                 continue;
             }
             $paramValue = $tpl->elementValue( $params[$paramName], $old_nspace, $currentNamespace, $functionPlacement );
-            $tpl->setVariableRef( $paramName, $paramValue, $outCurrentNamespace );
+            $tpl->setVariable( $paramName, $paramValue, $outCurrentNamespace );
             $setVariableArray[] = $paramName;
         }
         // Set constant variables
@@ -170,7 +170,7 @@ class sObjectForwarder extends eZObjectForwarder
                      $constantTemplateVariableKey == $view_var or
                      $tpl->hasVariable( $constantTemplateVariableKey, $currentNamespace ) )
                     continue;
-                $tpl->setVariableRef( $constantTemplateVariableKey, $constantTemplateVariableValue, $outCurrentNamespace );
+                $tpl->setVariable( $constantTemplateVariableKey, $constantTemplateVariableValue, $outCurrentNamespace );
                 $setVariableArray[] = $constantTemplateVariableKey;
             }
         }

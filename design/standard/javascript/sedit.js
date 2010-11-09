@@ -8,9 +8,6 @@ YUI.add('sedit', function(Y){
 		_attributeActions = {},
 		_nodeControls, _attributeControls, _currentNodeItem, _currentAttributeItem;
 
-	var _I18N = {
-	};
-
 	_ezUrl = function(url) {
 		return _config.ezRoot + url;
 	}
@@ -247,7 +244,6 @@ YUI.add('sedit', function(Y){
 	
 	function _nodeUISetVisible(node) {
 		var attributes = _parseNode(node);
-		console.info('Node visible: ' + attributes.oid);
 
 		if ( !_canDoOne(attributes) ) {
 			return false;
@@ -326,11 +322,11 @@ YUI.add('sedit', function(Y){
 	function _initUI() {
 		var icon;
 
-		if ( enableNodeFunctions ) {
+		if ( _config.enableNodeFunctions ) {
 			_nodeControls = Y.Node.create('<div class="se-node-controls"></div>');
 			
 			for ( i=0, l=_nodeFunctions.length; i<l; i++ ) {
-				icon = Y.Node.create('<a href="#" class="se-icon se-' + _nodeFunctions[i] + '" title="' + _I18N['node_' + _nodeFunctions[i]] + '">' + _I18N[_nodeFunctions[i]] + '</a>');
+				icon = Y.Node.create('<a href="#" class="se-icon se-' + _nodeFunctions[i] + '" title="' + Y.sEdit.I18N['node_' + _nodeFunctions[i]] + '">' + Y.sEdit.I18N['node_' + _nodeFunctions[i]] + '</a>');
 				_nodeControls.append(icon);
 				icon.setData('funcName', _nodeFunctions[i]);
 				Y.on('click', function(e){
@@ -352,11 +348,11 @@ YUI.add('sedit', function(Y){
 			}, 'body', '.se-node');
 		}
 
-		if ( enableAttributeFunctions ) {
+		if ( _config.enableAttributeFunctions ) {
 			_attributeControls = Y.Node.create('<div class="se-attribute-controls"></div>');
 			
 			for ( i=0, l=_attributeFunctions.length; i<l; i++ ) {
-				icon = Y.Node.create('<a href="#" class="se-icon se-' + _attributeFunctions[i] + '" title="' + _I18N['attribute_' + _attributeFunctions[i]] + '">' + _I18N[_attributeFunctions[i]] + '</a>');
+				icon = Y.Node.create('<a href="#" class="se-icon se-' + _attributeFunctions[i] + '" title="' + Y.sEdit.I18N['attribute_' + _attributeFunctions[i]] + '">' + Y.sEdit.I18N['attribute_' + _attributeFunctions[i]] + '</a>');
 				_attributeControls.append(icon);
 				icon.setData('funcName', _attributeFunctions[i]);
 				Y.on('click', function(e){
@@ -386,7 +382,7 @@ YUI.add('sedit', function(Y){
 	}
 	
 	Y.sEdit = {
-		I18N: _I18N,
+		I18N: {},
 		init: _init
 	}
 
