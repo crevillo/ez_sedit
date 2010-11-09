@@ -9,7 +9,11 @@ YUI.add('sedit', function(Y){
 		_nodeControls, _attributeControls, _currentNodeItem, _currentAttributeItem;
 
 	_ezUrl = function(url) {
-		return _config.ezRoot + url;
+		var prefix = _config.ezRoot || '';
+		if ( prefix.substr(prefix.length-1) == '/' ) {
+			prefix = prefix.substr(0, prefix.length-1);
+		}
+		return prefix + url;
 	}
 		
 	_nodeActions = {
@@ -64,7 +68,7 @@ YUI.add('sedit', function(Y){
 	_attributeActions = {
 		edit: function(node, atts) {
 			Y.io(_ezUrl('/content/action'), {
-				method: 'post',
+				method: 'POST',
 				data: {
 					sEditAttributeAction: true,
 					AttributeId: atts.aid,
@@ -74,13 +78,13 @@ YUI.add('sedit', function(Y){
 					success: function(e) {
 						console.info(e);
 					},
-					failure: function(e) {
-						console.info(e);
+					failure: function(e, e2) {
+						console.info(e2);
 					}
 				}
 			});
 		}
-	}
+	};
 
 	function _postRequest(url, params) {
 		var form = document.createElement("form");
@@ -387,4 +391,4 @@ YUI.add('sedit', function(Y){
 	}
 
 
-}, '1', {requires: ['node', 'event', 'dom', 'io']});
+}, '1', {requires: ['node', 'event', 'dom', 'io-base', 'querystring-stringify-simple']});

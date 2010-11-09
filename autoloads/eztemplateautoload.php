@@ -1,7 +1,7 @@
 <?php
 
 $eZTemplateOperatorArray = array();
-$eZTemplateOperatorArray[] = array( 'script' => 'extension/_sedit/autoloads/seditsoperator.php',
+$eZTemplateOperatorArray[] = array( 'script' => 'extension/_sedit/autoloads/seditoperator.php',
                                     'class' => 'sEditOperator',
                                     'operator_names' => array( 'se_node', 'se_attribute', 'se_name' ) );
 

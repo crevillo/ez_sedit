@@ -14,6 +14,7 @@
 	overflow:hidden;
 	float:left;
 	margin-left:1px;
+	background-image:url(../images/sedit/sprite.png);
 }
 
 .se-attribute.on {
@@ -25,27 +26,52 @@
 .se-attribute-controls {
 	display:none;
 	position:absolute;
-	right:2px;
-	top:2px;
+	right:0;
+	top:0;
 	z-index:5;
+}
+
+.se-attribute.se-name .se-attribute-controls {
+  right:auto;
+  left:0;
 }
 
 .se-node.se-attribute .se-attribute-controls,
 .se-node .se-attribute .se-attribute-controls {
 	top:auto;
-	bottom:2px;
+	bottom:0;
 }
 
 .se-attribute-controls.on {
 	display:inline;
 }
 
-.se-node-controls .se-icon {
-	background:#f90;
+.se-edit {
+	background-position:0 0;
 }
 
-.se-attribute-controls .se-icon {
-	background:#eb057e;
+.se-node-controls .se-edit {
+	background-position:-16px 0;
+}
+
+.se-node-controls .se-move {
+	background-position:-32px 0;
+}
+
+.se-node-controls .se-remove {
+	background-position:-48px 0;
+}
+
+.se-node-controls .se-hide {
+	background-position:-64px 0;
+}
+
+.se-node-controls .se-addlocations {
+	background-position:-80px 0;
+}
+
+.se-node-controls .se-sort {
+	background-position:-96px 0;
 }
 
 .se-node, .se-attribute {
@@ -53,7 +79,7 @@
 }
 
 .se-node.on {
-	border:2px solid #f90;
+	border:2px solid #fe7f00;
 	padding:2px;
 	margin:-4px;
 }
@@ -61,8 +87,8 @@
 .se-node-controls {
 	display:none;
 	position:absolute;
-	right:2px;
-	top:2px;
+	right:0;
+	top:0;
 	z-index:5;
 }
 

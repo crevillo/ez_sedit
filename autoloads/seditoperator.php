@@ -20,17 +20,11 @@ class sEditOperator
 
     function namedParameterList()
     {
-        return array( 'se_node' => array('content' => array( 'type' => 'string',
-                                                             'required' => true ),
-                                         'node' => array( 'type' => 'object',
+        return array( 'se_node' => array('node' => array( 'type' => 'object',
                                                              'required' => true )),
-                      'se_attribute' => array('content' => array( 'type' => 'string',
-                                                             'required' => true ),
-                                         'attribute' => array( 'type' => 'object',
+                      'se_attribute' => array('attribute' => array( 'type' => 'object',
                                                              'required' => true )),
-                      'se_name' => array('content' => array( 'type' => 'string',
-                                                             'required' => true ),
-                                         'node' => array( 'type' => 'object',
+                      'se_name' => array('node' => array( 'type' => 'object',
                                                              'required' => true ))
 					);
     }
@@ -55,9 +49,10 @@ class sEditOperator
             } break;
             case 'se_name':
             {
+                $node = $namedParameters['node'];
                 $object = $node->object();
                 $dataMap = $object->fetchDataMap();
-                $namePattern = $object->contentClass()->ContentObjectName();
+                $namePattern = $object->contentClass()->ContentObjectName;
                 $namePattern = implode(',', explode('<', $namePattern));
                 $namePattern = implode(',', explode('|', $namePattern));
                 $namePattern = implode(',', explode('>', $namePattern));
@@ -65,10 +60,10 @@ class sEditOperator
                 $ops = new eZTemplateStringOperator();
                 foreach ( $namePatternArray as $nameIdentifier ) {
                     if ( $nameIdentifier != '' ) {
-                        $attribute = $dataMap['$nameIdentifier'];
+                        $attribute = $dataMap[$nameIdentifier];
                         $name = $attribute->content();
                         if ( $ops->wash($name, false) == $operatorValue ) {
-                            $start = self::attributeStart($attribute);
+                            $start = self::attributeStart($attribute, true);
                             $end = self::attributeEnd();
                             $operatorValue = $start . $operatorValue . $end;
                             break;
@@ -91,9 +86,12 @@ class sEditOperator
         return $tpl->fetch( 'design:sedit/node_sedit_gui_end.tpl' );
     }
 
-    static private function attributeStart($attribute) {
+    static private function attributeStart($attribute, $isName=false) {
         $tpl = eZTemplate::factory();
         $tpl->setVariable( 'attribute', $attribute );
+        if ( $isName ) {
+            $tpl->setVariable( 'is_name', true );
+        }
         return $tpl->fetch( 'design:sedit/attribute_sedit_gui_start.tpl' );
         
     }

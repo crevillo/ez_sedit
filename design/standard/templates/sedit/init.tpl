@@ -5,7 +5,7 @@
     modules: {
       'sedit': {
         fullpath: '{/literal}{'javascript/sedit.js'|ezdesign(no)}{literal}',
-        requires: ['node', 'event', 'dom']
+        requires: ['node', 'event', 'dom', 'io-base', 'querystring-stringify-simple']
       }
     }
   }).use('sedit', function(Y){
@@ -69,7 +69,7 @@
     Y.on('domready', function(){
       Y.sEdit.init({
         policies: policies,
-        ezRoot: '{/literal}{''|ezroot}{literal}',
+        ezRoot: '{/literal}{''|ezurl(no)}{literal}',
         userId: '{/literal}{$current_user.contentobject_id}{literal}',
         currentNodeId: '{/literal}{$currentNodeId}{literal}',
         enableNodeFunctions: '{/literal}{$enableNodeFunctions}{literal}',
