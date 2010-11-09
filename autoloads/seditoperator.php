@@ -37,35 +37,69 @@ class sEditOperator
 
     function modify( &$tpl, &$operatorName, &$operatorParameters, &$rootNamespace, &$currentNamespace, &$operatorValue, &$namedParameters )
     {
-        $startTpl = eZTemplate::factory();
-        $endTpl = eZTemplate::factory();
-        $start = '';
-        $end = '';
-
         switch ( $operatorName )
         {
             case 'se_node':
             {
                 $node = $namedParameters['node'];
-                $startTpl = $tpl->setVariable( 'node', $node );
-                $start = $startTpl->fetch( 'design:sedit/node_sedit_gui_start.tpl' );
-                $end = $endTpl->fetch( 'design:sedit/node_sedit_gui_end.tpl' );
+                $start = self::nodeStart($node);
+                $end = self::nodeEnd();
+                $operatorValue = $start . $operatorValue . $end;
             } break;
             case 'se_attribute':
             {
                 $attribute = $namedParameters['attribute'];
-                $startTpl = $tpl->setVariable( 'attribute', $attribute );
-                $start = $startTpl->fetch( 'design:sedit/attribute_sedit_gui_start.tpl' );
-                $end = $endTpl->fetch( 'design:sedit/attribute_sedit_gui_end.tpl' );
+                $start = self::attributeStart($attribute);
+                $end = self::attributeEnd();
+                $operatorValue = $start . $operatorValue . $end;
             } break;
             case 'se_name':
             {
-                // @TODO: work out which attribute is used to generate the node name +
-                // use attribute_sedit_gui for this
+                $object = $node->object();
+                $dataMap = $object->fetchDataMap();
+                $namePattern = $object->contentClass()->ContentObjectName();
+                $namePattern = implode(',', explode('<', $namePattern));
+                $namePattern = implode(',', explode('|', $namePattern));
+                $namePattern = implode(',', explode('>', $namePattern));
+                $namePatternArray = explode(',', $namePattern);
+                foreach ( $namePatternArray as $nameIdentifier ) {
+                    if ( $nameIdentifier != '' ) {
+                        $attribute = $dataMap['$nameIdentifier'];
+                        $name = $attribute->content()
+                        if ( eZTemplateStringOperator::wash($name, false) == $operatorValue ) {
+                            $start = self::attributeStart($attribute);
+                            $end = self::attributeEnd();
+                            $operatorValue = $start . $operatorValue . $end;
+                            break;
+                        }
+                    }
+                }
             } break;
         }
 
-        $operatorValue = $start . $operatorValue . $end;
+    }
+
+    static private function nodeStart($node) {
+        $tpl = eZTemplate::factory();
+        $tpl->setVariable( 'node', $node );
+        return $tpl->fetch( 'design:sedit/node_sedit_gui_start.tpl' );
+    }
+
+    static private function nodeEnd() {
+        $tpl = eZTemplate::factory();
+        return $tpl->fetch( 'design:sedit/node_sedit_gui_end.tpl' );
+    }
+
+    static private function attributeStart($attribute) {
+        $tpl = eZTemplate::factory();
+        $tpl->setVariable( 'attribute', $attribute );
+        return $tpl->fetch( 'design:sedit/attribute_sedit_gui_start.tpl' );
+        
+    }
+
+    static private function attributeEnd() {
+        $tpl = eZTemplate::factory();
+        return $tpl->fetch( 'design:sedit/attribute_sedit_gui_end.tpl' );
     }
 
     /// \privatesection
