@@ -18,8 +18,8 @@
        $enableNodeFunctions=0
        $enableAttributeFunctions=0}
 
-    {if isset($current_node) }
-      {set $currentNodeId=$current_node.node_id)}
+    {if is_set($current_node) }
+      {set $currentNodeId=$current_node.node_id}
     {/if}
 
     {if ezini_hasvariable('NodeFunctions', 'sEditSettings', 'sedit.ini',,true() )}
