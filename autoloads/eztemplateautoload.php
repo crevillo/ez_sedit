@@ -1,5 +1,10 @@
 <?php
 
+$eZTemplateOperatorArray = array();
+$eZTemplateOperatorArray[] = array( 'script' => 'extension/_sedit/autoloads/seditsoperator.php',
+                                    'class' => 'sEditOperator',
+                                    'operator_names' => array( 'se_node', 'se_attribute', 'se_name' ) );
+
 $eZTemplateFunctionArray = array();
 $eZTemplateFunctionArray[] = array( 'function' => 'sObjectForwardInit',
                                     'function_names' => array( 'node_sedit_gui', 'attribute_sedit_gui' ) );
