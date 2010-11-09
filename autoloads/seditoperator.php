@@ -65,7 +65,7 @@ class sEditOperator
                 foreach ( $namePatternArray as $nameIdentifier ) {
                     if ( $nameIdentifier != '' ) {
                         $attribute = $dataMap['$nameIdentifier'];
-                        $name = $attribute->content()
+                        $name = $attribute->content();
                         if ( eZTemplateStringOperator::wash($name, false) == $operatorValue ) {
                             $start = self::attributeStart($attribute);
                             $end = self::attributeEnd();
