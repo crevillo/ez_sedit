@@ -62,11 +62,12 @@ class sEditOperator
                 $namePattern = implode(',', explode('|', $namePattern));
                 $namePattern = implode(',', explode('>', $namePattern));
                 $namePatternArray = explode(',', $namePattern);
+                $ops = new eZTemplateStringOperator();
                 foreach ( $namePatternArray as $nameIdentifier ) {
                     if ( $nameIdentifier != '' ) {
                         $attribute = $dataMap['$nameIdentifier'];
                         $name = $attribute->content();
-                        if ( eZTemplateStringOperator::wash($name, false) == $operatorValue ) {
+                        if ( $ops->wash($name, false) == $operatorValue ) {
                             $start = self::attributeStart($attribute);
                             $end = self::attributeEnd();
                             $operatorValue = $start . $operatorValue . $end;
