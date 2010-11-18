@@ -1,0 +1,7 @@
+notepad++ regex
+
+{$node\.data_map\.(.+)\.content|wash(.*)}
+{$node.data_map.\1.content|wash\2|se_attribute($node.data_map.\1)}
+
+{$node\.name|wash(.*)}
+{$node.name|wash\1|se_name($node)}

@@ -51,7 +51,7 @@ YUI.add('sedit', function(Y){
 			});
 		},
 		sort: function(node, atts) {
-			window.location.href = _ezUrl('/content/sort/' + atts.nid);
+			window.location.href = _ezUrl('/websitetoolbar/sort/' + atts.nid);
 		},
 		addlocations: function(node, atts) {
 			_postRequest(_ezUrl('/content/action'), {
@@ -72,14 +72,13 @@ YUI.add('sedit', function(Y){
 				data: {
 					sEditAttributeAction: true,
 					AttributeId: atts.aid,
-					ObjectId: atts.oid
+					ContentObjectID: atts.oid,
+					ContentObjectLanguageCode: atts.lang
 				},
 				on : {
 					success: function(e) {
-						console.info(e);
 					},
 					failure: function(e, e2) {
-						console.info(e2);
 					}
 				}
 			});
@@ -277,7 +276,7 @@ YUI.add('sedit', function(Y){
 		node.removeClass('on');
 
 		var attributes = _parseNode(node);
-		console.info('Node invisible: ' + attributes.oid);
+		//console.info('Node invisible: ' + attributes.oid);
 		_currentNodeItem = null;
 	}
 
@@ -285,7 +284,7 @@ YUI.add('sedit', function(Y){
 	function _attributeUISetVisible(node) {
 		var attributes = _parseNode(node);
 
-		console.info('Att visible: ' + attributes.oid);
+		//console.info('Att visible: ' + attributes.oid);
 
 		if ( !_canDo('edit', attributes) ) {
 			return false;
@@ -317,7 +316,7 @@ YUI.add('sedit', function(Y){
 
 		var attributes = _parseNode(node);
 
-		console.info('Att invisible: ' + attributes.oid);
+		//console.info('Att invisible: ' + attributes.oid);
 		/*if ( !node.ancestor('.se-node.se-oid-' + attributes.oid) ) {
 			_nodeUISetInvisible(node);
 		}*/

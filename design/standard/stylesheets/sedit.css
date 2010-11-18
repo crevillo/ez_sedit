@@ -31,15 +31,18 @@
 	z-index:5;
 }
 
-.se-attribute.se-name .se-attribute-controls {
-  right:auto;
-  left:0;
-}
-
 .se-node.se-attribute .se-attribute-controls,
 .se-node .se-attribute .se-attribute-controls {
 	top:auto;
 	bottom:0;
+}
+
+.se-node .se-attribute.se-name .se-attribute-controls,
+.se-attribute.se-name .se-attribute-controls {
+  right:auto;
+  left:0;
+  top:0;
+  bottom:auto;
 }
 
 .se-attribute-controls.on {
