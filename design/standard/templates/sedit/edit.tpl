@@ -7,7 +7,7 @@
     {include uri='design:sedit/edit_validation.tpl'}
 
     <div class="context-attributes">
-    {include uri='design:sedit/edit_attribute.tpl' view_parameters=$view_parameters}
+    {include uri='design:content/edit_attribute.tpl' view_parameters=$view_parameters}
     </div>
 
 

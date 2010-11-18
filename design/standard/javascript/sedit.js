@@ -120,6 +120,8 @@ YUI.add('sedit', function(Y){
 					name = nameValue.substring(0, nameValue.indexOf('-'));
 					value = nameValue.substring(nameValue.indexOf('-')+1);
 					attributes[name] = value;
+				} else {
+					attributes[nameValue] = true;
 				}
 			}
 		}
@@ -252,8 +254,9 @@ YUI.add('sedit', function(Y){
 			return false;
 		}
 		
+		console.info(attributes);
 		for ( i=0, l=_nodeFunctions.length; i<l; i++ ) {
-			if ( attributes[_nodeFunctions[i]] ) {
+			if ( attributes[_nodeFunctions[i]] && ( _nodeFunctions[i] != 'sort' || !!attributes['con'] ) ) {
 				_nodeIcons[_nodeFunctions[i]].addClass('on');
 			} else {
 				_nodeIcons[_nodeFunctions[i]].removeClass('on');
@@ -355,7 +358,7 @@ YUI.add('sedit', function(Y){
 			_attributeControls = Y.Node.create('<div class="se-attribute-controls"></div>');
 			
 			for ( i=0, l=_attributeFunctions.length; i<l; i++ ) {
-				icon = Y.Node.create('<a href="#" class="se-icon se-' + _attributeFunctions[i] + '" title="' + Y.sEdit.I18N['attribute_' + _attributeFunctions[i]] + '">' + Y.sEdit.I18N['attribute_' + _attributeFunctions[i]] + '</a>');
+				icon = Y.Node.create('<a href="#" class="se-icon on se-' + _attributeFunctions[i] + '" title="' + Y.sEdit.I18N['attribute_' + _attributeFunctions[i]] + '">' + Y.sEdit.I18N['attribute_' + _attributeFunctions[i]] + '</a>');
 				_attributeControls.append(icon);
 				icon.setData('funcName', _attributeFunctions[i]);
 				Y.on('click', function(e){

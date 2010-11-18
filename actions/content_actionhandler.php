@@ -28,7 +28,7 @@ function _sedit_ContentActionHandler( &$module, &$http, &$ObjectID )
         $classID = $obj->attribute( 'contentclass_id' );
         $class = eZContentClass::fetch( $classID );
 
-if ( !$obj->canEdit( false, false, false, $EditLanguage ) )
+    if ( !$obj->canEdit( false, false, false, $EditLanguage ) )
     {
         return $module->handleError( eZError::KERNEL_ACCESS_DENIED, 'kernel',
                                      array( 'AccessList' => $obj->accessList( 'edit' ) ) );
