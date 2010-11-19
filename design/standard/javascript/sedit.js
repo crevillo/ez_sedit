@@ -263,7 +263,7 @@ YUI.add('sedit', function(Y){
 			// Hiding it won't remove it from the block + will confuse the user.
 			if ( _nodeFunctions[i] == 'hide' ) {
 				while ( ancestor.get('nodeName') != 'BODY' ) {
-					if ( /\bblock-/.exec(ancestor.get('className')) ) {
+					if ( ancestor.get('id') && ancestor.get('id').indexOf('address-') === 0 ) {
 						forceOff = true;
 						break;
 					}
