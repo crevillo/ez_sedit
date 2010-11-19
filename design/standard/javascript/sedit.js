@@ -248,15 +248,29 @@ YUI.add('sedit', function(Y){
 
 	
 	function _nodeUISetVisible(node) {
-		var attributes = _parseNode(node);
+		var attributes = _parseNode(node),
+				forceOff, ancestor;
 
 		if ( !_canDoOne(attributes) ) {
 			return false;
 		}
 		
-		console.info(attributes);
 		for ( i=0, l=_nodeFunctions.length; i<l; i++ ) {
-			if ( attributes[_nodeFunctions[i]] && ( _nodeFunctions[i] != 'sort' || !!attributes['con'] ) ) {
+			forceOff = false;
+			ancestor = node.get('parentNode');
+
+			// Don't show hide icon if we're inside an ezflow block.
+			// Hiding it won't remove it from the block + will confuse the user.
+			if ( _nodeFunctions[i] == 'hide' ) {
+				while ( ancestor.get('nodeName') != 'BODY' ) {
+					if ( /\bblock-/.exec(ancestor.get('className')) ) {
+						forceOff = true;
+						break;
+					}
+					ancestor = ancestor.get('parentNode');
+				}
+			}
+			if ( !forceOff && attributes[_nodeFunctions[i]] && ( _nodeFunctions[i] != 'sort' || !!attributes['con'] ) ) {
 				_nodeIcons[_nodeFunctions[i]].addClass('on');
 			} else {
 				_nodeIcons[_nodeFunctions[i]].removeClass('on');
