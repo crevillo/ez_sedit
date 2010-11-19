@@ -1,7 +1,7 @@
 YUI.add('sedit', function(Y){
 	var L = Y.Lang,
 		_attributeCache = {},
-		_nodeFunctions = ['edit', 'move', 'remove', 'hide', 'sort', 'addlocations'],
+		_nodeFunctions = ['edit', 'move', 'remove', 'hide', 'sort', 'addlocations', 'pushtoblock'],
 		_attributeFunctions = ['edit'],
 		_nodeIcons = {},
 		_nodeActions = {},
@@ -60,6 +60,9 @@ YUI.add('sedit', function(Y){
 				ContentObjectID: atts.oid,
 				AddAssignmentButton: true
 			});
+		},
+		pushtoblock: function(node, atts) {
+			window.location.href = _ezUrl('/ezflow/push/' + atts.nid);
 		},
 		translate: function(node, atts) {
 		}
@@ -249,7 +252,7 @@ YUI.add('sedit', function(Y){
 	
 	function _nodeUISetVisible(node) {
 		var attributes = _parseNode(node),
-				forceOff, ancestor;
+				forceOff, forceOn, ancestor;
 
 		if ( !_canDoOne(attributes) ) {
 			return false;
@@ -269,8 +272,11 @@ YUI.add('sedit', function(Y){
 					}
 					ancestor = ancestor.get('parentNode');
 				}
+			} else if ( _nodeFunctions[i] == 'pushtoblock' ) {
+				forceOn = true;
 			}
-			if ( !forceOff && attributes[_nodeFunctions[i]] && ( _nodeFunctions[i] != 'sort' || !!attributes['con'] ) ) {
+			if ( forceOn ||
+					(!forceOff && attributes[_nodeFunctions[i]] && ( _nodeFunctions[i] != 'sort' || !!attributes['con'] ) ) ) {
 				_nodeIcons[_nodeFunctions[i]].addClass('on');
 			} else {
 				_nodeIcons[_nodeFunctions[i]].removeClass('on');

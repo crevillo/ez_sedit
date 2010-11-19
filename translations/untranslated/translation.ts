@@ -25,5 +25,17 @@
         <source>Add locations</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Push to block</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Publish</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

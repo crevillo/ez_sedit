@@ -81,6 +81,10 @@
 	background-position:-96px 0;
 }
 
+.se-node-controls .se-pushtoblock {
+	background-position:-112px 0;
+}
+
 .se-node, .se-attribute {
 	position:relative;
 }

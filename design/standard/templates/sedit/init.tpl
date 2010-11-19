@@ -62,6 +62,7 @@
       node_hide: '{/literal}{'Hide'|i18n('design/standard/sedit/node')}{literal}',
       node_sort: '{/literal}{'Sort'|i18n('design/standard/sedit/node')}{literal}',
       node_addlocations: '{/literal}{'Add locations'|i18n('design/standard/sedit/node')}{literal}',
+      node_pushtoblock: '{/literal}{'Push to block'|i18n('design/standard/sedit/node')}{literal}',
       attribute_edit: '{/literal}{'Edit'|i18n('design/standard/sedit/attribute')}{literal}',
       attribute_publish: '{/literal}{'Publish'|i18n('design/standard/sedit/attribute')}{literal}',
       attribute_cancel: '{/literal}{'Cancel'|i18n('design/standard/sedit/attribute')}{literal}'

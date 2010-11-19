@@ -1,0 +1,1 @@
+{include uri='design:sedit/node_sedit_gui_start.tpl' node='$node'}{node_view_gui node=$node}{include uri='design:sedit/node_sedit_gui_end.tpl' node='$node'}
