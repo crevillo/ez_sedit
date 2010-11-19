@@ -81,7 +81,7 @@ YUI.add('sedit', function(Y){
 				on : {
 					success: function(e) {
 					},
-					failure: function(e, e2) {
+					failure: function(e) {
 					}
 				}
 			});
