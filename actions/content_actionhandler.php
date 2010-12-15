@@ -6,7 +6,6 @@ function _sedit_ContentActionHandler( &$module, &$http, &$ObjectID )
    {
 
     
-       //$parameters = array($ObjectID, 'f', $http->postVariable('ContentObjectLanguageCode'));
 
     $res = eZTemplateDesignResource::instance();
     $res->setKeys( array( array( 'layout', 'print' ) ) );

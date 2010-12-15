@@ -70,16 +70,23 @@ YUI.add('sedit', function(Y){
 
 	_attributeActions = {
 		edit: function(node, atts) {
-			Y.io(_ezUrl('/content/action'), {
+			Y.io(_ezUrl('/layout/set/sedit/content/action'), {
 				method: 'POST',
 				data: {
 					sEditAttributeAction: true,
 					AttributeId: atts.aid,
+					ContentClassAttributeId: atts.ccaid,
 					ContentObjectID: atts.oid,
 					ContentObjectLanguageCode: atts.lang
 				},
 				on : {
-					success: function(e) {
+					success: function(id, o) {
+						var edit = Y.Node.create('<div>' + o.responseText + '</div>');
+						edit.setStyle('position', 'absolute');
+						edit.setStyle('z-index', '10');
+						edit.setStyle('top', node.getY() + 'px');
+						edit.setStyle('left', node.getX() + 'px');
+						Y.one('body').append(edit);
 					},
 					failure: function(e) {
 					}
