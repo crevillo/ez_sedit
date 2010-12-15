@@ -6,6 +6,8 @@ YUI.add('sedit', function(Y){
 		_nodeIcons = {},
 		_nodeActions = {},
 		_attributeActions = {},
+		_locationHref = window.location.href,
+		_isEditingAttribute = false,
 		_nodeControls, _attributeControls, _currentNodeItem, _currentAttributeItem;
 
 	_ezUrl = function(url) {
@@ -23,8 +25,8 @@ YUI.add('sedit', function(Y){
 				ContentNodeID: atts.nid,
 				NodeID: atts.nid,
 				ContentObjectID: atts.oid,
-				RedirectURIAfterPublish: window.location.href,
-				RedirectIfDiscarded: window.location.href,
+				RedirectURIAfterPublish: _locationHref,
+				RedirectIfDiscarded: _locationHref,
 				EditButton: true
 			});
 		},
@@ -32,8 +34,8 @@ YUI.add('sedit', function(Y){
 			_postRequest(_ezUrl('/content/action'), {
 				ContentNodeID: atts.nid,
 				NodeID: atts.nid,
-				RedirectURIAfterMove: window.location.href,
-				RedirectIfCancel: window.location.href,
+				RedirectURIAfterMove: _locationHref,
+				RedirectIfCancel: _locationHref,
 				MoveNodeButton: true
 			});
 		},
@@ -45,8 +47,8 @@ YUI.add('sedit', function(Y){
 				ContentNodeID: atts.nid,
 				NodeID: atts.nid,
 				ContentObjectID: atts.oid,
-				RedirectURIAfterRemove: window.location.href,
-				RedirectIfCancel: window.location.href,
+				RedirectURIAfterRemove: _locationHref,
+				RedirectIfCancel: _locationHref,
 				ActionRemove: true
 			});
 		},
@@ -77,10 +79,14 @@ YUI.add('sedit', function(Y){
 					AttributeId: atts.aid,
 					ContentClassAttributeId: atts.ccaid,
 					ContentObjectID: atts.oid,
-					ContentObjectLanguageCode: atts.lang
+					ContentObjectLanguageCode: atts.lang,
+					RedirectURIAfterPublish: _locationHref,
+					RedirectIfDiscarded: _locationHref,
 				},
 				on : {
 					success: function(id, o) {
+						_isEditingAttribute = true;
+						console.info(o.responseText);
 						var edit = Y.Node.create('<div>' + o.responseText + '</div>');
 						edit.setStyle('position', 'absolute');
 						edit.setStyle('z-index', '10');
@@ -261,7 +267,7 @@ YUI.add('sedit', function(Y){
 		var attributes = _parseNode(node),
 				forceOff, forceOn, ancestor;
 
-		if ( !_canDoOne(attributes) ) {
+		if ( _isEditingAttribute || !_canDoOne(attributes) ) {
 			return false;
 		}
 		
@@ -316,7 +322,7 @@ YUI.add('sedit', function(Y){
 
 		//console.info('Att visible: ' + attributes.oid);
 
-		if ( !_canDo('edit', attributes) ) {
+		if ( _isEditingAttribute || !_canDo('edit', attributes) ) {
 			return false;
 		}
 
