@@ -87,12 +87,18 @@ YUI.add('sedit', function(Y){
 					success: function(id, o) {
 						_isEditingAttribute = true;
 						console.info(o.responseText);
-						var edit = Y.Node.create('<div>' + o.responseText + '</div>');
+						var edit = Y.Node.create('<div class="se-edit-att">' + o.responseText + '</div>');
 						edit.setStyle('position', 'absolute');
 						edit.setStyle('z-index', '10');
 						edit.setStyle('top', node.getY() + 'px');
 						edit.setStyle('left', node.getX() + 'px');
+						edit.setStyle('width', node.get('offsetWidth') + 'px');
 						Y.one('body').append(edit);
+
+						Y.one('#seditAttributeDiscard').on('click', function(e){
+							edit.remove();
+							_isEditingAttribute = false;
+						});
 					},
 					failure: function(e) {
 					}

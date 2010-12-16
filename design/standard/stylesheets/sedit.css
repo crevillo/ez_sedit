@@ -140,3 +140,30 @@
 .attribute-image .se-attribute {
 	z-index:1;
 }
+
+.se-edit-att {
+	border:2px solid #eb057e;
+	position:relative;
+}
+
+.se-edit-att div.block {
+	margin:0;
+}
+
+#seditAttributePublish {
+	position:absolute;
+	bottom:-18px;
+	right:18px;
+	height:16px;
+	width:16px;
+	text-indent:-99999px;
+}
+
+#seditAttributeDiscard {
+	position:absolute;
+	bottom:-18px;
+	right:0;
+	height:16px;
+	width:16px;
+	text-indent:-99999px;
+}
