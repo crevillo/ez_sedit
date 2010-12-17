@@ -5,7 +5,7 @@
     modules: {
       'sedit': {
         fullpath: '{/literal}{'javascript/sedit.js'|ezdesign(no)}{literal}',
-        requires: ['node', 'event', 'dom', 'io-base', 'querystring-stringify-simple']
+        requires: ['node', 'event', 'dom', 'io-form', 'querystring-stringify-simple', 'anim']
       }
     }
   }).use('sedit', function(Y){

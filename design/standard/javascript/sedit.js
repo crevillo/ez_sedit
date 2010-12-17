@@ -72,6 +72,19 @@ YUI.add('sedit', function(Y){
 
 	_attributeActions = {
 		edit: function(node, atts) {
+			_isEditingAttribute = true;
+
+			var edit = Y.Node.create('<div class="se-edit-att loading"></div>');
+			edit.setStyle('position', 'absolute');
+			edit.setStyle('z-index', '10');
+			edit.setStyle('top', node.getY() + 'px');
+			edit.setStyle('left', node.getX() + 'px');
+			edit.setStyle('width', (node.get('offsetWidth') - 4) + 'px');
+			edit.setStyle('height', (node.get('offsetHeight') - 4) + 'px');
+			Y.one('body').append(edit);
+			_attributeUISetInvisible(node);
+			node.setStyle('opacity', '0.5');
+
 			Y.io(_ezUrl('/layout/set/sedit/content/action'), {
 				method: 'POST',
 				data: {
@@ -85,22 +98,81 @@ YUI.add('sedit', function(Y){
 				},
 				on : {
 					success: function(id, o) {
-						_isEditingAttribute = true;
-						console.info(o.responseText);
-						var edit = Y.Node.create('<div class="se-edit-att">' + o.responseText + '</div>');
-						edit.setStyle('position', 'absolute');
-						edit.setStyle('z-index', '10');
-						edit.setStyle('top', node.getY() + 'px');
-						edit.setStyle('left', node.getX() + 'px');
-						edit.setStyle('width', node.get('offsetWidth') + 'px');
-						Y.one('body').append(edit);
+						node.setStyle('visibility', 'hidden');
+						
+						var content = Y.Node.create('<div class="content">' + o.responseText + '</div>');
+							  input = content.one('.ezcca-edit-datatype-ezstring input[type=text]'),
+								textarea = null;
+						if ( !!input ) {
+							textarea = Y.Node.create('<textarea></textarea>');
+							textarea.setAttribute('name', input.getAttribute('name'));
+							textarea.set('innerHTML', input.getAttribute('value'));
+							textarea.setStyle('height', node.get('offsetHeight') + 'px');
+							textarea.setStyle('fontStyle', node.getComputedStyle('fontStyle'));
+							textarea.setStyle('fontWeight', node.getComputedStyle('fontWeight'));
+							textarea.setStyle('fontFamily', node.getComputedStyle('fontFamily'));
+							textarea.setStyle('fontSize', node.getComputedStyle('fontSize'));
+							textarea.setStyle('lineHeight', node.getComputedStyle('lineHeight'));
+							textarea.setStyle('color', node.getComputedStyle('color'));
+							input.replace(textarea);
+						}
 
-						Y.one('#seditAttributeDiscard').on('click', function(e){
+						//content.setStyle('visibility', 'hidden');
+				    edit.append(content);
+
+						var anim = new Y.Anim({
+				        node: edit,
+				        duration: 0.5,
+				        to: { 
+					        height: content.get('offsetHeight'),
+					        width: content.get('offsetWidth')
+					      }
+				    });
+
+				    function finish() {
+							edit.removeClass('loading');
+							if ( !textarea ) {
+								edit.setStyle('width', 'auto');
+								edit.setStyle('height', 'auto');
+							}
+							content.setStyle('visibility', 'visible');
+				    }
+				 
+				    anim.on('end', finish);
+
+						edit.one('#seditAttributePublish').on('click', function(e) {
+							if ( !!textarea ) {
+								textarea.set('innerHTML', textarea.get('innerHTML').split("\n").join(' '));
+							}
+							edit.addClass('loading');
+						});
+						edit.one('#seditAttributeDiscard').on('click', function(e) {
+							node.setStyle('opacity', '1');
+							node.setStyle('visibility', 'visible');
+							edit.setStyle('display', 'none');
+							var form = edit.one('form');
+							form.one('#seditAttributePublish').remove();
+							Y.io(form.getAttribute('action'), {
+								method: 'POST',
+								form: {
+									id:form.get('id')
+								}
+							});
 							edit.remove();
 							_isEditingAttribute = false;
 						});
+
+						if ( !textarea ) {
+							anim.run();
+						} else {
+							finish();
+						}
 					},
 					failure: function(e) {
+						_isEditingAttribute = false;
+						node.setStyle('opacity', '1');
+						node.setStyle('visibility', 'visible');
+						edit.remove();
 					}
 				}
 			});
@@ -432,4 +504,4 @@ YUI.add('sedit', function(Y){
 	}
 
 
-}, '1', {requires: ['node', 'event', 'dom', 'io-base', 'querystring-stringify-simple']});
+}, '1', {requires: ['node', 'event', 'dom', 'io-form', 'querystring-stringify-simple', 'anim']});
