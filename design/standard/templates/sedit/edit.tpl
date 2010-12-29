@@ -5,8 +5,6 @@
 
 {def $content_language = ezini( 'RegionalSettings', 'Locale' )}
 
-    {include uri='design:sedit/edit_validation.tpl'}
-
     <div class="context-attributes">
 {foreach $content_attributes as $attribute_identifier => $attribute}
 {if $attribute.id|eq($aid)}
@@ -24,6 +22,7 @@
     <input type="hidden" name="DiscardConfirm" value="0" />
     <input type="hidden" name="RedirectIfDiscarded" value="{if ezhttp_hasvariable( 'LastAccessesURI', 'session' )}{ezhttp( 'LastAccessesURI', 'session' )}{/if}" />
     <input type="hidden" name="RedirectURIAfterPublish" value="{if ezhttp_hasvariable( 'LastAccessesURI', 'session' )}{ezhttp( 'LastAccessesURI', 'session' )}{/if}" />
+    <input type="hidden" name="CustomActionButton[]" value="" />
     </div>
 
 </form>

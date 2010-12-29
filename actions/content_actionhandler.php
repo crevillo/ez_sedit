@@ -4,16 +4,14 @@ function _sedit_ContentActionHandler( &$module, &$http, &$ObjectID )
 { 
    if ( $http->hasPostVariable("sEditAttributeAction") ) 
    {
-
-    
-
-    $res = eZTemplateDesignResource::instance();
-    $res->setKeys( array( array( 'layout', 'print' ) ) );
+       $res = eZTemplateDesignResource::instance();
+       $res->setKeys( array( array( 'layout', 'print' ) ) );
 
        $content = eZModule::findModule('content');
        //$content->setCurrentAction( 'EditButton' );
        //$module->setCurrentAction( 'Publish', 'edit' );
-       //$http->setPostVariable("EditButton", true);
+       
+       $http->setPostVariable("CustomActionButton", array());
        $obj = eZContentObject::fetch( $ObjectID );
 
        $FromLanguage = $EditLanguage = $http->postVariable("ContentObjectLanguageCode");

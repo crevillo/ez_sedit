@@ -136,6 +136,11 @@ YUI.add('sedit', function(Y){
 								edit.setStyle('height', 'auto');
 							}
 							content.setStyle('visibility', 'visible');
+
+					    var firstInput = content.one('input, textarea');
+					    if ( firstInput ) {
+					    	firstInput.focus();
+					    }
 				    }
 				 
 				    anim.on('end', finish);
